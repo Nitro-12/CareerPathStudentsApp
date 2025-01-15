@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация о студенте</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        body {
+            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text strong {
+            color: #333;
+        }
+
+         img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        }
+
+        .btn-custom {
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-custom-primary {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+        }
+
+        .btn-custom-primary:hover {
+            background: linear-gradient(45deg, #5a0fbf, #1f6ae5);
+            transform: translateY(-2px);
+        }
+
+        .btn-custom-danger {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+        }
+
+        .btn-custom-danger:hover {
+            background: linear-gradient(45deg, #e63b5e, #e64527);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+       <h1>Информация о студенте</h1>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ student.user.last_name }} {{ student.user.first_name }} {{ student.user.middle_name }}</h5>
+                <p class="card-text"><strong>Email:</strong> {{ student.user.email }}</p>
+                <p class="card-text"><strong>Группа:</strong> {{ student.group }}</p>
+                <p class="card-text"><strong>Направление:</strong> {{ student.field_of_study }}</p>
+                <p class="card-text"><strong>Курс:</strong> {{ student.course }}</p>
+                <p class="card-text"><strong>Уровень образования:</strong> {{ student.education_level }}</p>
+            </div>
+        </div>
+         <div>
+            <h2 class="section-title">Достижения студента</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Описание</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for achievement in achievements %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ achievement.description }}</td>
+                        <td>{{ achievement.date|date:"d.m.Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">Достижений пока нет</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+             <div>
+            <h2>Аналитика достижений в виде графика</h2>
+            <!-- Встраиваем график прямо с API -->
+            <img src="{% url 'achievement_analytics_api' %}?student_id={{ student.id }}" alt="График достижений">
+        </div>
+        </div>
+        <div class="mt-5">
+            <h2>Рекомендации</h2>
+            <ul>
+                {% for recommendation in recommendations %}
+                <li>{{ recommendation.reason }}</li>
+                {% empty %}
+                <li>Рекомендаций пока нет</li>
+                {% endfor %}
+            </ul>
+        </div>
+         <div class="text-center mt-4">
+            <button class="btn btn-custom btn-custom-danger" onclick="window.history.back();">Назад</button>
+        </div>
+    </div>
+</body>
+</html>
