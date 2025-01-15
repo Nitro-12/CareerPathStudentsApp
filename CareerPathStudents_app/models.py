@@ -7,37 +7,6 @@ class UserRole(models.Model):
 
     def __str__(self):
         return self.role_name
-# Адаптер для предоставления данных из Student и Teacher
-class UserAdapter:
-    def __init__(self, user_instance):
-        self.user_instance = user_instance
-
-    def get_full_name(self):
-        # Получение полного имени пользователя
-        if isinstance(self.user_instance, Student):
-            return f"{self.user_instance.user.last_name} {self.user_instance.user.first_name} {self.user_instance.user.middle_name}"
-        elif isinstance(self.user_instance, Teacher):
-            return f"{self.user_instance.user.last_name} {self.user_instance.user.first_name} {self.user_instance.user.middle_name}"
-        return "Unknown User"
-
-    def get_additional_info(self):
-        # Получение дополнительных данных
-        if isinstance(self.user_instance, Student):
-            return {
-                "group": self.user_instance.group,
-                "field_of_study": self.user_instance.field_of_study,
-                "course": self.user_instance.course,
-                "education_level": self.user_instance.education_level,
-            }
-        elif isinstance(self.user_instance, Teacher):
-            return {
-                "department": self.user_instance.department,
-                "position": self.user_instance.position,
-                "subjects": self.user_instance.subjects,
-                "rank": self.user_instance.rank,
-            }
-        return {}
-
 
 # Модель для кастомного пользователя
 class CustomUser(AbstractUser):
@@ -116,6 +85,7 @@ class Achievement(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     description = models.TextField()
     date = models.DateField()
+    is_contest = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Достижение {self.student.user.get_full_name()}: {self.description}"
@@ -190,6 +160,3 @@ class UserAdapter(TargetInterface):
                 "rank": self.user_instance.rank,
             }
         return {}
-
-
-

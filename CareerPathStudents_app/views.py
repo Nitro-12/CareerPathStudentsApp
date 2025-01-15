@@ -80,8 +80,7 @@ def student_detail(request, student_id):
         # Если данных нет, устанавливаем значения по умолчанию
         average_per_month = 0
         success_rate = 0
-    print("Среднее количество достижений в месяц:", average_per_month)
-    print("Успешность студента (участие в конкурсах):", success_rate)
+
 
     # Передаём данные в шаблон
     return render(request, 'student_detail.html', {

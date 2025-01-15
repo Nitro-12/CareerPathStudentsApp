@@ -107,3 +107,5 @@ class AchievementTestCase(TestCase):
         )
         self.assertEqual(achievement.description, "Завершение курса по Python")
         mock_create.assert_called_once()
+
+
